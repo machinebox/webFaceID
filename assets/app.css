@@ -1,0 +1,27 @@
+body { 
+	background-color: #f9f9f9;
+	overflow-y: none;
+}
+.main.logo {
+	width: 250px;
+}
+.icon.image {
+	width: 15px;
+	height: 20px;
+}
+
+.options {
+	top: 0; left: 0;
+    margin: auto;
+    text-align: center;
+    width: 100%;
+    position: fixed;
+	margin-top: 80vh;
+	z-index: 1000;
+}
+
+.options .message {
+	width: 300px;
+	margin: auto;
+	margin-top: 10px;
+}
