@@ -15,7 +15,7 @@ import (
 func main() {
 	var (
 		addr  = flag.String("addr", ":9000", "address")
-		state = flag.String("state", "./faces.machinebox.facebox", "facebox state file")
+		state = flag.String("state", "", "facebox state file")
 	)
 
 	flag.Parse()
@@ -26,9 +26,21 @@ func main() {
 	boxutil.WaitForReady(context.Background(), facebox)
 	fmt.Println("Done!")
 
-	fmt.Println("Setup facebox state")
+	fmt.Println("Go to:", *addr+"...")
+	setupFaceboxState(facebox, *state)
 
-	f, err := os.Open(*state)
+	srv := NewServer("./assets", facebox)
+	if err := http.ListenAndServe(*addr, srv); err != nil {
+		log.Fatalln(err)
+	}
+}
+
+func setupFaceboxState(facebox *facebox.Client, state string) {
+	if state == "" {
+		return
+	}
+	fmt.Println("Setup facebox state")
+	f, err := os.Open(state)
 	if err != nil {
 		log.Fatalln(err)
 		return
@@ -40,11 +52,4 @@ func main() {
 	}
 	fmt.Println("Done!")
 	f.Close()
-
-	fmt.Println("Go to:", *addr+"...")
-
-	srv := NewServer("./assets", facebox)
-	if err := http.ListenAndServe(*addr, srv); err != nil {
-		log.Fatalln(err)
-	}
 }
