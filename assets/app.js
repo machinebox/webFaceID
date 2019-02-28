@@ -1,9 +1,20 @@
 $(function(){
+	console.log("bublo will run this code");
 	var video = document.getElementById('video');
 	if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 		navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
-			video.src = window.URL.createObjectURL(stream);
-			video.play();
+			try{
+				video.src = window.URL.createObjectURL(stream);
+				//video.srcObject = stream;
+				//video.play();
+			} catch(e){
+				console.log("cant play video:");
+				console.log(e);
+				video.srcObject = stream;
+				video.play();
+
+			}
+			
 		});
 	}
 
@@ -38,7 +49,8 @@ $(function(){
 					return
 				}
 				if (!resp.matched) {
-					button.transition("shake")
+					$('.info.message').text("sorry no match").fadeIn()
+					// button.transition("shake")
 					return
 				}
 				$('.info.message').text("Hello " + resp.name).fadeIn()
